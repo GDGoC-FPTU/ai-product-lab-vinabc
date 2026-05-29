@@ -1,0 +1,5 @@
+AI giúp gì: Tôi đã sử dụng AI để brainstorm các pain point vận hành trong hệ sinh thái Vingroup, đặc biệt là bài toán đối soát charging session tại VinFast. Ngoài ra, AI còn hỗ trợ viết prompt để tự động phân loại mismatch billing, gợi ý kiến trúc Agent workflow và hỗ trợ debug một số đoạn code Python xử lý log charging station.
+
+AI sai gì: Ban đầu AI đề xuất một workflow rule-based quá phức tạp với quá nhiều bước if-else để detect anomaly giữa charging log và billing data, dẫn tới khó maintain và scale khi số lượng charging session tăng cao. Ngoài ra, AI từng hallucinate một số metric về thời gian settlement mà không có context thực tế từ doanh nghiệp.
+
+Sửa đổi ra sao: Tôi đã điều chỉnh prompt theo hướng giới hạn AI chỉ đề xuất architecture ở mức high-level, yêu cầu “không tự bịa số liệu nếu không có nguồn”, đồng thời ép AI output theo format cố định gồm: actor → workflow → bottleneck → metric → architecture. Tôi cũng bổ sung rule để AI ưu tiên anomaly detection model kết hợp rule-engine thay vì pure LLM nhằm giảm false positive trong quá trình đối soát billing.
