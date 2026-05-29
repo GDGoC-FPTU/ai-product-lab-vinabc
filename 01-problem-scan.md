@@ -1,4 +1,4 @@
-### 📝 List bài toán của tôi:
+<<<<<<< HEAD
 | # | Subsidiary (VinFast/Xanh SM...) | Lens | Mô tả ngắn bài toán |
 |---|----------------------------------|------|---------------------|
 | 1 |Xanhsm |Lặp lại |So khớp và phân bổ lại cuốc xe khi khách hàng thay đổi điểm đón/điểm đến giữa chuyến (xảy ra hàng nghìn lần/ngày, dispatch phải route lại thủ công). |
