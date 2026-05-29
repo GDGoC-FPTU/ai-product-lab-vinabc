@@ -1,4 +1,4 @@
-# Báo cáo Deep-Dive — Nhóm VinABC (Xanh SM Bus / Vận hành xe buýt điện)
+# Báo cáo Deep-Dive — Nhóm VinABC (VinBus / Vận hành xe buýt điện)
 
 > Báo cáo phân tích sâu dự án AI mà nhóm đã thống nhất chọn, hoàn thiện **Phase 3 (DEEP-DIVE)** và **Phase 5 (EVALUATE)** từ `01-problem-scan.md`, trình bày theo chuẩn đầu ra của Vin Smart Future.
 
@@ -17,7 +17,7 @@
 
 ## 🏛️ Bối cảnh: Chúng tôi là ai?
 
-Chúng tôi là nhóm **AI Engineer** tại **Vin Smart Future**, được giao phối hợp với Khối Vận Hành mảng **xe buýt điện (Xanh SM Bus)** để tìm kiếm cơ hội tối ưu hóa bằng trí tuệ nhân tạo.
+Chúng tôi là nhóm **AI Engineer** tại **Vin Smart Future**, được giao phối hợp với Khối Vận Hành mảng **xe buýt điện (VinBus)** để tìm kiếm cơ hội tối ưu hóa bằng trí tuệ nhân tạo.
 
 Qua khảo sát thực địa tại Trung tâm Điều độ, nhóm nhận thấy một nỗi đau rõ rệt: **biểu đồ chạy (headway) được đặt cố định, ít điều chỉnh theo nhu cầu thực tế**. Hệ quả là xe **chạy rỗng giờ thấp điểm** (tốn km/điện vô ích) trong khi **quá tải giờ cao điểm** (mất khách, giảm trải nghiệm). Bài toán nhóm mang vào buổi Lab đến từ chính quan sát thực tế này.
 
@@ -25,7 +25,7 @@ Qua khảo sát thực địa tại Trung tâm Điều độ, nhóm nhận thấ
 
 # 🗳️ Quyết định lựa chọn của nhóm
 
-Nhóm quyết định chọn bài toán **"Tối ưu biểu đồ chạy động (Dynamic Headway) cho mạng xe buýt điện Xanh SM Bus"** để thực hiện Deep-Dive.
+Nhóm quyết định chọn bài toán **"Tối ưu biểu đồ chạy động (Dynamic Headway) cho mạng xe buýt điện VinBus"** để thực hiện Deep-Dive.
 
 ## Lý do lựa chọn:
 
@@ -39,7 +39,7 @@ Nhóm quyết định chọn bài toán **"Tối ưu biểu đồ chạy động
 
 ## 3.1. Current-State Workflow
 
-Quy trình lập & điều chỉnh biểu đồ chạy hiện tại của điều phối viên Xanh SM Bus (hoàn toàn thủ công, theo kinh nghiệm):
+Quy trình lập & điều chỉnh biểu đồ chạy hiện tại của điều phối viên VinBus (hoàn toàn thủ công, theo kinh nghiệm):
 
 ```text
 ┌──────────────┐     ┌──────────────┐     ┌──────────────┐     ┌──────────────┐
@@ -73,7 +73,7 @@ Quy trình lập & điều chỉnh biểu đồ chạy hiện tại của điề
 
 | Field                       | Nội dung                                                                                                                                                                                                                                                                                                                                                                                                     |
 | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **1. Actor / Operator**     | **Điều phối viên vận hành** (Operations Dispatcher) của Xanh SM Bus — người lập và điều chỉnh biểu đồ chạy hằng ngày. (Hưởng lợi gián tiếp: hành khách & bộ phận tài chính.)                                                                                                                                                                                                                                 |
+| **1. Actor / Operator**     | **Điều phối viên vận hành** (Operations Dispatcher) của VinBus — người lập và điều chỉnh biểu đồ chạy hằng ngày. (Hưởng lợi gián tiếp: hành khách & bộ phận tài chính.)                                                                                                                                                                                                                                 |
 | **2. Current Workflow**     | Đầu mỗi mùa/quý, điều phối viên đặt headway **cố định** cho từng tuyến (ví dụ 10 phút/chuyến cả ngày, hoặc 2 mức thô cao/thấp điểm theo giờ hành chính). Lịch gần như **không đổi** nhiều tuần, bất kể mưa/sự kiện/biến động nhu cầu. Điều chỉnh (nếu có) làm **thủ công, theo cảm tính**, phản ứng _sau khi_ đã quá tải hoặc có khiếu nại.                                                                  |
 | **3. Bottleneck**           | Bước 3 & 4: Không có cơ chế **dự báo nhu cầu theo trạm × giờ** và **đề xuất headway tối ưu** kịp thời. Việc chỉnh lịch phụ thuộc trí nhớ/kinh nghiệm cá nhân, không tận dụng dữ liệu lịch sử + thời tiết + sự kiện; điều phối viên không đủ thời gian tính lại lịch cho hàng chục tuyến mỗi ngày (30–60 phút/lần chỉnh).                                                                                     |
 | **4. Business Impact**      | (1) **Chi phí lãng phí:** xe rỗng giờ thấp điểm → ước tính lãng phí ~10–20% số km vận hành (tốn điện, hao pin, khấu hao, nhân sự). (2) **Mất doanh thu:** quá tải giờ cao điểm → mất ~5–15% lượt khách tiềm năng do khách bỏ chuyến. (3) **Giảm trải nghiệm & uy tín:** chờ lâu, chen chúc → khiếu nại, giảm gắn bó.                                                                                         |
